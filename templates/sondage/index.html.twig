@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1 class="my-3 text-center">Liste de nos sondages</h1>
+
+	<div class="row">
+		<div class="col-9">
+			{% if sondages %}
+				<ul>
+					{% for sondage in sondages %}
+						<li>
+							<a href="{{ path('app_single_sondage', {id:sondage.id}) }}">
+								{{sondage.title}}
+							</a>
+						</li>
+					{% endfor %}
+				</ul>
+			{% else %}
+				<h2 class="text-danger h4">Il n'y a pas de sondage pour le moment.</h2>
+			{% endif %}
+		</div>
+        <div class="col-3">
+            <h2 class="h4">Ajouter un nouveau sondage</h2>
+            {{form(form)}}
+        </div>
+	</div>
+{% endblock %}
