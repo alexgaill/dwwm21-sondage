@@ -41,7 +41,7 @@ class SondageController extends AbstractController
 
         if (!$sondage) {
             $this->addFlash('danger', 'Aucun sondage existant avec cet id');
-            return $this->redirectToRoute('app_sondage');
+            return $this->redirectToRoute('app_question');
         }
 
         return $this->render('sondage/single.html.twig', [
