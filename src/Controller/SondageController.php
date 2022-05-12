@@ -28,9 +28,33 @@ class SondageController extends AbstractController
             return $this->redirectToRoute('app_sondage');
         }
 
+        $meilleuresReponses = array();
+        $sondages = $manager->getRepository(Sondage::class)->findAll();
+
+        foreach ($sondages as $sondage) {
+            foreach ($sondage->getQuestions() as $question) {
+                $bestIds = array();
+                $scoreMax = 0;
+                foreach ($question->getReponses() as $reponse) {
+                    if ($reponse->getScore() > $scoreMax) {
+                        $scoreMax = $reponse->getScore();
+                        $bestIds = array_splice($bestIds, 0, count($bestIds) -1 );
+
+                        $bestIds[] = $reponse;
+                    } elseif ($reponse->getScore() == $scoreMax) {
+                        $bestIds[] = $reponse;
+                    }
+                }
+                foreach ($bestIds as $reponse) {
+                    $meilleuresReponses[] = $reponse;
+                }
+            }
+        }
+
         return $this->renderForm('sondage/index.html.twig', [
-            'sondages' => $manager->getRepository(Sondage::class)->findAll(),
-            'form' => $form
+            'sondages' => $sondages,
+            'form' => $form,
+            'meilleuresReponses' => $meilleuresReponses
         ]);
     }
 

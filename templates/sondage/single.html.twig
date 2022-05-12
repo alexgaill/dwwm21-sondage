@@ -1,5 +1,26 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <h2 class="my-3">{{sondage.title}}</h2>
-{% endblock %}
+	<h2 class="my-3">{{sondage.title}}</h2>
+
+	<ul class="list-group">
+		{% for question in sondage.questions %}
+			<li class="list-group-item">
+				{{ question.title}}
+
+				{% if question.reponses %}
+					<ul class="list-group">
+						{% for reponse in question.reponses %}
+							<li class="list-group-item">
+								{{reponse.title}}
+								|
+								{{reponse.score}}
+                                |
+                                <a href="{{ path('app_vote_reponse', {id: reponse.id}) }}"><button class="btn btn-success">Voter</button></a>
+							</li>
+						{% endfor %}
+					</ul>
+				{% endif %}
+			</li>
+		{% endfor %}
+	{% endblock %}

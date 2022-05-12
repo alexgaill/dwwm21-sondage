@@ -2,7 +2,8 @@
 
 {% block body %}
 	<h1 class="my-3 text-center">Liste de nos sondages</h1>
-
+	<pre>
+	</pre>
 	<div class="row">
 		<div class="col-9">
 			{% if sondages %}
@@ -12,6 +13,31 @@
 							<a href="{{ path('app_single_sondage', {id:sondage.id}) }}">
 								{{sondage.title}}
 							</a>
+							{% if sondage.questions %}
+								<ul>
+									{% for question in sondage.questions %}
+										<li>
+											{{ question.title}}
+
+											{% if question.reponses %}
+												<ul>
+													{% for reponse in question.reponses %}
+														{% if reponse in meilleuresReponses %}
+															<li class="text-success">
+																{{reponse.title}} | {{reponse.score}}
+															</li>
+														{% else %}	
+															<li>
+																{{reponse.title}} | {{reponse.score}}
+															</li>
+														{% endif %}
+													{% endfor %}
+												</ul>
+											{% endif %}
+										</li>
+									{% endfor %}
+								</ul>
+							{% endif %}
 						</li>
 					{% endfor %}
 				</ul>
